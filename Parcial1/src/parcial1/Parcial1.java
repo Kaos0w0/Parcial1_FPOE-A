@@ -1,21 +1,23 @@
 package parcial1;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+import modelo.PronosticoModel;
+import vista.PronosticoView;
+import controlador.PronosticoController;
 
 /**
- *
- * @author Kaos
+ * Parcial N. 1 FPOE (A). Archivo: Parcial1.java, Autores (Grupo 01 POE): 
+ * Brayan Andrés Sánchez Lozano <brayan.andres.sanchez@correounivalle.edu.co>
+ * Jose Luis Hincapie Bucheli <jose.bucheli@correounivalle.edu.co>
+ * Fecha creación: 04-08-2022, Fecha última modificación: 04-08-2022 
+ *  Docente: Luis Romo <luis.romo@correounivalle.edu.co>
  */
+
 public class Parcial1 {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-        // TODO code application logic here
+        PronosticoModel modelo = new PronosticoModel();
+        PronosticoView vista = new PronosticoView();
+        PronosticoController controlador = new PronosticoController(modelo, vista);
     }
     
 }
