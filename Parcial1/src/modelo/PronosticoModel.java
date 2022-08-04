@@ -30,6 +30,10 @@ public class PronosticoModel {
     private int añoAPronosticar;
     private float a, b, numerador, denominador;
 
+    //Arreglo para llevar los datos a la vista
+    String arrayForVista[];
+
+    //Inicializar valores
     public PronosticoModel() {
         totalAños = 0;
         totalVentas = 0;
@@ -37,12 +41,15 @@ public class PronosticoModel {
         totalVentasCuadradas = 0;
         totalVentasPorAños = 0;
         totalSumaAños = 0;
+        arrayForVista = new String[5];
     }
 
-    //Inicializar valores
-    public void ingresoAño(int añosPronostico, int cantidadVentas){
-        this.añosPronostico = añosPronostico;
+    //Ingreso de los datos del usuario
+    public void ingresoVentas(int cantidadVentas, int añosPronostico){
         this.cantidadVentas = cantidadVentas;
+        this.añosPronostico = añosPronostico;
+        añoAñadido();
+        arrayForVista = new String[5];
     }
 
     //Getter para cada variable
@@ -167,4 +174,16 @@ public class PronosticoModel {
         return (numerador / denominador);
     }
 
+    public boolean isCalculable(){
+        return totalAños >= 3;
+    }
+
+    public String[] getFilaForVista(){
+        arrayForVista[0] = String.valueOf(totalAños);
+        arrayForVista[1] = String.valueOf(cantidadVentas);
+        arrayForVista[2] = String.valueOf(getXCuadrado());
+        arrayForVista[3] = String.valueOf(getYCuadrada());
+        arrayForVista[4] = String.valueOf(getXPorY());
+        return arrayForVista;
+    }
 }

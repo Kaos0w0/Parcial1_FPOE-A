@@ -1,6 +1,8 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Parcial N. 1 FPOE (A). Archivo: PronosticoView.java, Autores (Grupo 01 POE): 
@@ -11,13 +13,50 @@ import java.awt.Color;
  */
 
 public class PronosticoView extends javax.swing.JFrame {
-
+    DefaultTableModel modelo;
     /**
      * Creates new form VentanaPrincipal
      */
     public PronosticoView() {
         initComponents();
+        initBtnCommands();
         this.getContentPane().setBackground(Color.white);
+    }
+
+    public void addBtnNuevo(ActionListener listenControles) {
+        btnNuevoP.addActionListener(listenControles);
+    }
+
+    public void addBtnBorrarA(ActionListener listenControles) {
+        btnBorrarA.addActionListener(listenControles);
+    }
+
+    public void addBtnModificar(ActionListener listenControles) {
+        btnModificar.addActionListener(listenControles);
+    }
+
+    public void addBtnAgregarA(ActionListener listenControles) {
+        btnAgregarA.addActionListener(listenControles);
+    }
+
+    private void initBtnCommands() {
+        btnNuevoP.setActionCommand("btnNuevo");
+        btnModificar.setActionCommand("btnModificar");
+        btnAgregarA.setActionCommand("btnAgregar");
+        btnBorrarA.setActionCommand("btnBorrar");
+    }
+
+    public String getAños(){
+        return txtCantidad.getText();
+    }
+
+    public String getVentas(){
+        return txtVentas.getText();
+    }
+
+    public void setFila(String[] fila){
+        modelo = (DefaultTableModel) tblVentas.getModel();
+        modelo.addRow(fila);
     }
 
     /**
@@ -89,9 +128,16 @@ public class PronosticoView extends javax.swing.JFrame {
         Controles.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
 
         btnAgregarA.setText("Agregar Año");
+        btnAgregarA.setActionCommand("btnNuevo");
+        btnAgregarA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarAActionPerformed(evt);
+            }
+        });
         Controles.add(btnAgregarA);
 
         btnBorrarA.setText("Borrar Año");
+        btnBorrarA.setActionCommand("btnBorrar");
         btnBorrarA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBorrarAActionPerformed(evt);
@@ -100,6 +146,7 @@ public class PronosticoView extends javax.swing.JFrame {
         Controles.add(btnBorrarA);
 
         btnModificar.setText("Modificar Año");
+        btnModificar.setActionCommand("btnModificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -108,6 +155,7 @@ public class PronosticoView extends javax.swing.JFrame {
         Controles.add(btnModificar);
 
         btnNuevoP.setText("Nuevo Pronostico");
+        btnNuevoP.setActionCommand("btnNuevo");
         btnNuevoP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoPActionPerformed(evt);
@@ -120,21 +168,25 @@ public class PronosticoView extends javax.swing.JFrame {
 
         tblVentas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Año", "Cantidad de Ventas", "X^2", "Y^2", "X*Y"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tblVentas);
@@ -275,6 +327,10 @@ public class PronosticoView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCrecimientoActionPerformed
 
+    private void btnAgregarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarAActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -291,15 +347,12 @@ public class PronosticoView extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PronosticoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PronosticoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PronosticoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PronosticoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        
         //</editor-fold>
         //</editor-fold>
 
