@@ -4,6 +4,8 @@
  */
 package vista;
 
+import java.awt.Color;
+
 /**
  *
  * @author jose9
@@ -15,6 +17,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      */
     public VentanaPrincipal() {
         initComponents();
+        this.getContentPane().setBackground(Color.white);
     }
 
     /**
@@ -41,11 +44,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblVentas = new javax.swing.JTable();
         pnlPronosticoV = new javax.swing.JPanel();
+        lblCrecimiento = new javax.swing.JLabel();
+        txtCrecimiento = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblPronostico = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pronostico de Ventas");
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
+        pnlVenta.setBackground(new java.awt.Color(255, 255, 255));
         pnlVenta.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de Venta"));
         pnlVenta.setName("pnlVentas"); // NOI18N
         pnlVenta.setLayout(new java.awt.GridLayout(1, 2));
@@ -60,6 +69,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         pnlVenta.add(txtVentas);
 
+        pnlYears.setBackground(java.awt.Color.white);
         pnlYears.setBorder(javax.swing.BorderFactory.createTitledBorder("Años a Pronosticar"));
         pnlYears.setName("pnlVentas"); // NOI18N
         pnlYears.setLayout(new java.awt.GridLayout(1, 2));
@@ -74,8 +84,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         pnlYears.add(txtCantidad);
 
+        Controles.setBackground(java.awt.Color.white);
         Controles.setBorder(javax.swing.BorderFactory.createTitledBorder("Controles"));
-        Controles.setLayout(new java.awt.GridLayout(2, 2, 15, 15));
+        Controles.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
 
         btnAgregarA.setText("Agregar Año");
         Controles.add(btnAgregarA);
@@ -104,6 +115,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         Controles.add(btnNuevoP);
 
+        pnlHistoricoVentas.setBackground(java.awt.Color.white);
         pnlHistoricoVentas.setBorder(javax.swing.BorderFactory.createTitledBorder("Historico de Ventas"));
 
         tblVentas.setModel(new javax.swing.table.DefaultTableModel(
@@ -133,27 +145,73 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             pnlHistoricoVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHistoricoVentasLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 649, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlHistoricoVentasLayout.setVerticalGroup(
             pnlHistoricoVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHistoricoVentasLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlHistoricoVentasLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
 
+        pnlPronosticoV.setBackground(java.awt.Color.white);
         pnlPronosticoV.setBorder(javax.swing.BorderFactory.createTitledBorder("Pronostico de Ventas"));
+
+        lblCrecimiento.setText("Crecimiento Promedio:");
+
+        txtCrecimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCrecimientoActionPerformed(evt);
+            }
+        });
+
+        tblPronostico.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Año", "Pronostico Venta"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblPronostico);
 
         javax.swing.GroupLayout pnlPronosticoVLayout = new javax.swing.GroupLayout(pnlPronosticoV);
         pnlPronosticoV.setLayout(pnlPronosticoVLayout);
         pnlPronosticoVLayout.setHorizontalGroup(
             pnlPronosticoVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pnlPronosticoVLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(lblCrecimiento)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCrecimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlPronosticoVLayout.createSequentialGroup()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         pnlPronosticoVLayout.setVerticalGroup(
             pnlPronosticoVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 290, Short.MAX_VALUE)
+            .addGroup(pnlPronosticoVLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlPronosticoVLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblCrecimiento)
+                    .addComponent(txtCrecimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,33 +219,33 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(pnlYears, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pnlVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)
-                        .addComponent(Controles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pnlHistoricoVentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlPronosticoV, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(Controles, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(pnlHistoricoVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlPronosticoV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(33, 33, 33))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(pnlYears, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Controles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(48, 48, 48)
-                .addComponent(pnlHistoricoVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlHistoricoVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlPronosticoV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -212,6 +270,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnNuevoPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoPActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNuevoPActionPerformed
+
+    private void txtCrecimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCrecimientoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCrecimientoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -255,14 +317,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevoP;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCantidad;
+    private javax.swing.JLabel lblCrecimiento;
     private javax.swing.JLabel lblVentas;
     private javax.swing.JPanel pnlHistoricoVentas;
     private javax.swing.JPanel pnlPronosticoV;
     private javax.swing.JPanel pnlVenta;
     private javax.swing.JPanel pnlYears;
+    private javax.swing.JTable tblPronostico;
     private javax.swing.JTable tblVentas;
     private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtCrecimiento;
     private javax.swing.JTextField txtVentas;
     // End of variables declaration//GEN-END:variables
 }
