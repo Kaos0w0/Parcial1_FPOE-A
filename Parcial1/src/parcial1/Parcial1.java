@@ -17,7 +17,7 @@ public class Parcial1 {
     public static void main(String[] args) {
         PronosticoModel modelo = new PronosticoModel();
         PronosticoView vista = new PronosticoView();
-        //PronosticoController controlador = new PronosticoController(modelo, vista);
+        PronosticoController controlador = new PronosticoController(modelo, vista);
     }
     
 }
