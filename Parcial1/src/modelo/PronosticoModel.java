@@ -132,6 +132,39 @@ public class PronosticoModel {
         totalVentasCuadradas += getYCuadrada();
         totalVentasPorAños += getXPorY();
     }
+    
+    public void añoEliminado(int año, int ventas){
+        totalAños -= 1;
+        totalSumaAños -= año;
+        totalVentas -= ventas;
+        totalAñosCuadrados -= valorAlCuadrado(año);
+        totalVentasCuadradas -= valorAlCuadrado(ventas);
+        totalVentasPorAños -= (año * ventas);
+    }
 
+    public void calcularB(){
+        numerador = (totalAños * totalVentasPorAños) - (totalSumaAños * totalVentas);
+        denominador = (totalAños * totalAñosCuadrados) - (valorAlCuadrado(totalAños));
+        b = numerador / denominador;
+    }
+
+    public void calcularA(){
+        numerador = (totalVentas) - (b * totalSumaAños);
+        denominador = totalAños;
+        a = numerador / denominador;
+    }
+
+    public float pronosticoXAño(int año){
+        calcularB();
+        calcularA();
+        return (a + (b * año));
+    }
+
+    public float crecimientoXAños(){
+        calcularB();
+        numerador = (b * añosPronostico);
+        denominador = totalVentas;
+        return (numerador / denominador);
+    }
 
 }
