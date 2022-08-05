@@ -2,6 +2,7 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.PronosticoModel;
 import vista.PronosticoView;
@@ -38,16 +39,22 @@ public class PronosticoController {
 
             switch (b.getActionCommand()) {
                 case "btnAgregar" -> {
+                    int añoAux = modelo.getAñoPronostico();
                     try{
                         año = Integer.valueOf(vista.getAños());
                     } catch(NumberFormatException e) {
-                        año = 0;
+                        año = añoAux;
                     }
                     try{
+                        modelo.setAño(año);
                         ventas = Integer.valueOf(vista.getVentas());
-                        modelo.ingresoVentas(ventas, año, false);
+                        modelo.ingresoVentas(ventas, false);
                         vista.setFila(modelo.getFilaForVista());
                         vista.setTotal(modelo.getTotalForVista());                        
+                        if(modelo.isCalculable()){
+                            vista.setCrecimiento(modelo.crecimientoXAños());
+                            vista.tablaPronostico(modelo.tablaPronostico());
+                        }
                     } catch(NumberFormatException e) {
                         JOptionPane.showMessageDialog(null, "Ingrese un valor de ventas valido", "Advertencia",
                         JOptionPane.WARNING_MESSAGE);
@@ -56,21 +63,27 @@ public class PronosticoController {
                     vista.nuevo();
                     modelo.nuevo();
                 } case "btnBorrar" -> {
-                    int selectedAux = vista.getSelectedRow();
-                    vista.añadirFilas(modelo.eliminarFila(vista.getTabla(), vista.getModelo(), selectedAux));
                     try{
+                        int añoAux = modelo.getAñoPronostico();
+                        try{
+                            año = Integer.valueOf(vista.getAños());
+                        } catch(NumberFormatException e) {
+                            año = añoAux;
+                        }
+                        modelo.setAño(año);
                         if(vista.getRowCount() == 1){
                             vista.nuevo();
                             modelo.nuevo();
                         } else {
-                            
-                            
-                            /*vista.quitarFila(selectedAux);
-                            if(selectedAux <= vista.getTabla().getRowCount()-1){
-                               vista.cambiarFila(modelo.getFilaForVista(), selectedAux);
-                            }
+                            int selectedAux = vista.getSelectedRow();
+                            List<String[]> listasAux = modelo.eliminarFila(vista.getTabla(), vista.getModelo(), selectedAux, false, 0);
+                            vista.nuevo();
+                            vista.añadirFilas(listasAux);
                             vista.setTotal(modelo.getTotalForVista());
-                            vista.resetIndex();*/
+                            if(modelo.isCalculable()){
+                                vista.setCrecimiento(modelo.crecimientoXAños());
+                                vista.tablaPronostico(modelo.tablaPronostico());
+                            }
                         }
                     } catch (Exception e){
                         JOptionPane.showMessageDialog(null, "Seleccione una fila primero", "Advertencia",
@@ -87,15 +100,21 @@ public class PronosticoController {
                                 } catch(NumberFormatException e) {
                                     throw new RuntimeException("Valor inválido");
                                 }
-                                modelo.eliminarFila(vista.getTabla(), vista.getModelo(), selectedAux);
+                                int añoAux = modelo.getAñoPronostico();
                                 try{
                                     año = Integer.valueOf(vista.getAños());
                                 } catch(NumberFormatException e) {
-                                    año = 0;
+                                    año = añoAux;
                                 }
-                                modelo.ingresoVentas(ventas, año, true);
-                                vista.cambiarFila(modelo.getFilaForVista(), selectedAux);
+                                modelo.setAño(año);
+                                List<String[]> listasAux = modelo.eliminarFila(vista.getTabla(), vista.getModelo(), selectedAux, true, ventas);
+                                vista.nuevo();
+                                vista.añadirFilas(listasAux);
                                 vista.setTotal(modelo.getTotalForVista());
+                                if(modelo.isCalculable()){
+                                    vista.setCrecimiento(modelo.crecimientoXAños());
+                                    vista.tablaPronostico(modelo.tablaPronostico());
+                                }
                             }
                         } else {
                             throw new RuntimeException("Seleccione una fila primero");

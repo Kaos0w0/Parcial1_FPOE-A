@@ -21,6 +21,7 @@ import javax.swing.table.TableColumnModel;
 
 public class PronosticoView extends javax.swing.JFrame {
     DefaultTableModel modelo;
+    DefaultTableModel modeloTotal;
     /**
      * Creates new form VentanaPrincipal
      */
@@ -95,8 +96,10 @@ public class PronosticoView extends javax.swing.JFrame {
     public void nuevo(){
         limpiarTabla(tblVentas);
         limpiarTabla(tblTotalV);
+        limpiarTabla(tblPronostico);
         setTotal(new String[]{"-", "-", "-", "-", "-"});
         txtVentas.setText("");
+        txtCrecimiento.setText("");
         txtCantidad.setText("");
     }
 
@@ -147,6 +150,18 @@ public class PronosticoView extends javax.swing.JFrame {
     public void añadirFilas(List<String[]> filas){
         for(int i=0; i<filas.size(); i++){
             setFila(filas.get(i));
+        }
+    }
+
+    public void setCrecimiento(float crec){
+        txtCrecimiento.setText(String.valueOf(crec * 100)+"%");
+    }
+
+    public void tablaPronostico(List<String[]> tabla){
+        limpiarTabla(tblPronostico);
+        for(int i=0; i<tabla.size(); i++){
+            modeloTotal = (DefaultTableModel) tblPronostico.getModel();
+            modeloTotal.addRow(tabla.get(i));
         }
     }
 
@@ -352,21 +367,25 @@ public class PronosticoView extends javax.swing.JFrame {
 
         tblPronostico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Año", "Pronostico Venta"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane2.setViewportView(tblPronostico);

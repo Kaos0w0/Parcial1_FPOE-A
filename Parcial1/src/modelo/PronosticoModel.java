@@ -50,11 +50,14 @@ public class PronosticoModel {
     }
 
     //Ingreso de los datos del usuario
-    public void ingresoVentas(int cantidadVentas, int añosPronostico, boolean existente){
+    public void ingresoVentas(int cantidadVentas, boolean existente){
         this.cantidadVentas = cantidadVentas;
-        this.añosPronostico = añosPronostico;
         añoAñadido(existente);
         arrayForVista = new String[5];
+    }
+
+    public void setAño(int añosPronostico){
+        this.añosPronostico = añosPronostico;
     }
 
     //Getter para cada variable
@@ -160,7 +163,7 @@ public class PronosticoModel {
 
     public void calcularB(){
         numerador = (totalAños * totalVentasPorAños) - (totalSumaAños * totalVentas);
-        denominador = (totalAños * totalAñosCuadrados) - (valorAlCuadrado(totalAños));
+        denominador = (totalAños * totalAñosCuadrados) - (valorAlCuadrado(totalSumaAños));
         b = numerador / denominador;
     }
 
@@ -215,25 +218,43 @@ public class PronosticoModel {
         arrayForVista = new String[5];
     }
 
-    public List<String[]> eliminarFila(JTable tabla, DefaultTableModel modelo, int fila){
+    public List<String[]> eliminarFila(JTable tabla, DefaultTableModel modelo, int fila, boolean edit, int nuevoValor){
         int aux = tabla.getRowCount();
         List<String> datosReinicio = new ArrayList<>();
         List<String[]> listas = new ArrayList<>();
         for(int l = 0; l < aux; l++){
-            datosReinicio.add((String) modelo.getValueAt(fila, 1));
+            datosReinicio.add((String) modelo.getValueAt(l, 1));
         }
 
-        while(fila != tabla.getRowCount()){
-            modelo.removeRow(fila);
+        if(edit == true){
+            datosReinicio.remove(fila);
+            datosReinicio.add(fila, String.valueOf(nuevoValor));
+        } else {
+            datosReinicio.remove(fila);
         }
-
-        datosReinicio.remove(fila);
-        
+        aux = añosPronostico;
         nuevo();
+
         for(int j=0; j<datosReinicio.size(); j++){
-            ingresoVentas(Integer.valueOf(datosReinicio.get(j)), añosPronostico, false);
+            ingresoVentas(Integer.valueOf(datosReinicio.get(j)), false);
             listas.add(getFilaForVista());
         }
         return listas;
+    }
+
+    public void restarFila(JTable tabla, DefaultTableModel modelo, int fila){
+        añoEliminado(tabla.getRowCount(), Integer.valueOf((String) modelo.getValueAt(fila, 1)), fila);
+    }
+
+    public List<String[]> tablaPronostico(){
+        List<String[]> tablaPronostico = new ArrayList<>();
+        String[] auxPronostico;
+        for(int i = 1; i < añosPronostico+1; i++){
+            auxPronostico = new String[2];
+            auxPronostico[0] = String.valueOf(totalAños+i);
+            auxPronostico[1] = String.valueOf(pronosticoXAño(totalAños+i));
+            tablaPronostico.add(auxPronostico);
+        }
+        return tablaPronostico;
     }
 }
