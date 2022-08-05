@@ -45,7 +45,7 @@ public class PronosticoController {
                     }
                     try{
                         ventas = Integer.valueOf(vista.getVentas());
-                        modelo.ingresoVentas(ventas, año);
+                        modelo.ingresoVentas(ventas, año, false);
                         vista.setFila(modelo.getFilaForVista());
                         vista.setTotal(modelo.getTotalForVista());                        
                     } catch(NumberFormatException e) {
@@ -56,21 +56,54 @@ public class PronosticoController {
                     vista.nuevo();
                     modelo.nuevo();
                 } case "btnBorrar" -> {
+                    int selectedAux = vista.getSelectedRow();
+                    vista.añadirFilas(modelo.eliminarFila(vista.getTabla(), vista.getModelo(), selectedAux));
                     try{
-                        modelo.eliminarFila(vista.getTabla(), vista.getModelo(), vista.getSelectedRow());
                         if(vista.getRowCount() == 1){
                             vista.nuevo();
                             modelo.nuevo();
                         } else {
-                            modelo.eliminarFila(vista.getTabla(), vista.getModelo(), vista.getSelectedRow());
-                            vista.quitarFila(vista.getSelectedRow());
+                            
+                            
+                            /*vista.quitarFila(selectedAux);
+                            if(selectedAux <= vista.getTabla().getRowCount()-1){
+                               vista.cambiarFila(modelo.getFilaForVista(), selectedAux);
+                            }
+                            vista.setTotal(modelo.getTotalForVista());
+                            vista.resetIndex();*/
                         }
                     } catch (Exception e){
                         JOptionPane.showMessageDialog(null, "Seleccione una fila primero", "Advertencia",
                         JOptionPane.WARNING_MESSAGE); 
                     }
                 } case "btnModificar" -> {
-                    
+                    try{
+                        int selectedAux = vista.getSelectedRow();
+                        if(selectedAux != -1){
+                            String cambio = JOptionPane.showInputDialog(null, "Nuevo numero de ventas para el año " + (vista.getSelectedRow() + 1) + ":", "Cambio de ventas", JOptionPane.QUESTION_MESSAGE);
+                            if(cambio != null){
+                                try{
+                                    ventas = Integer.valueOf(cambio);
+                                } catch(NumberFormatException e) {
+                                    throw new RuntimeException("Valor inválido");
+                                }
+                                modelo.eliminarFila(vista.getTabla(), vista.getModelo(), selectedAux);
+                                try{
+                                    año = Integer.valueOf(vista.getAños());
+                                } catch(NumberFormatException e) {
+                                    año = 0;
+                                }
+                                modelo.ingresoVentas(ventas, año, true);
+                                vista.cambiarFila(modelo.getFilaForVista(), selectedAux);
+                                vista.setTotal(modelo.getTotalForVista());
+                            }
+                        } else {
+                            throw new RuntimeException("Seleccione una fila primero");
+                        }
+                    } catch(RuntimeException E){
+                        JOptionPane.showMessageDialog(null, E.getMessage(), "Advertencia",
+                        JOptionPane.WARNING_MESSAGE); 
+                    }
                 } default -> System.out.println("Este boton no existe");
             }
 

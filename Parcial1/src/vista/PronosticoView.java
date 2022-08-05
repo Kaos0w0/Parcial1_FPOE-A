@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -74,6 +75,13 @@ public class PronosticoView extends javax.swing.JFrame {
         modelo.addRow(fila);
     }
 
+    public void cambiarFila(String[] fila, int cual){
+        modelo = (DefaultTableModel) tblVentas.getModel();
+        for(int i=1; i<5; i++){
+            modelo.setValueAt(fila[i], cual, i);
+        }
+    }
+
     public void limpiarTabla(JTable tabla){
        if(tabla.getRowCount() > 0){
             modelo = (DefaultTableModel) tabla.getModel();
@@ -122,6 +130,24 @@ public class PronosticoView extends javax.swing.JFrame {
 
     public int getRowCount(){
         return tblVentas.getRowCount();
+    }
+
+    public void resetIndex(){
+        modelo = (DefaultTableModel) tblVentas.getModel();
+        for(int i=0; i<tblVentas.getRowCount(); i++){
+            modelo.setValueAt(i+1,i,0);
+        }
+    }
+
+    public void eliminarFila(int fila){
+        modelo = (DefaultTableModel) tblVentas.getModel();
+        modelo.removeRow(fila);
+    }
+
+    public void añadirFilas(List<String[]> filas){
+        for(int i=0; i<filas.size(); i++){
+            setFila(filas.get(i));
+        }
     }
 
     /**

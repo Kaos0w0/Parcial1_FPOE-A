@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -48,10 +50,10 @@ public class PronosticoModel {
     }
 
     //Ingreso de los datos del usuario
-    public void ingresoVentas(int cantidadVentas, int añosPronostico){
+    public void ingresoVentas(int cantidadVentas, int añosPronostico, boolean existente){
         this.cantidadVentas = cantidadVentas;
         this.añosPronostico = añosPronostico;
-        añoAñadido();
+        añoAñadido(existente);
         arrayForVista = new String[5];
     }
 
@@ -134,22 +136,26 @@ public class PronosticoModel {
         return (totalAños * cantidadVentas);
     }
 
-    public void añoAñadido(){
-        totalAños += 1;
-        totalSumaAños += totalAños;
+    public void añoAñadido(boolean existente){
+        if(existente == false){
+            totalAños += 1;
+            totalSumaAños += totalAños;
+        } else {
+            totalSumaAños += totalAños + 1;
+        }
         totalVentas += cantidadVentas;
         totalAñosCuadrados += getXCuadrado();
         totalVentasCuadradas += getYCuadrada();
         totalVentasPorAños += getXPorY();
     }
     
-    public void añoEliminado(int año, int ventas){
+    public void añoEliminado(int año, int ventas, int index){
         totalAños -= 1;
         totalSumaAños -= año;
         totalVentas -= ventas;
-        totalAñosCuadrados -= valorAlCuadrado(año);
+        totalAñosCuadrados -=  valorAlCuadrado(index);
         totalVentasCuadradas -= valorAlCuadrado(ventas);
-        totalVentasPorAños -= (año * ventas);
+        totalVentasPorAños -= (index * ventas);
     }
 
     public void calcularB(){
@@ -209,7 +215,25 @@ public class PronosticoModel {
         arrayForVista = new String[5];
     }
 
-    public void eliminarFila(JTable tabla, DefaultTableModel modelo, int fila){
-        añoEliminado((int) modelo.getValueAt(fila, 0), (int) modelo.getValueAt(fila, 1));
+    public List<String[]> eliminarFila(JTable tabla, DefaultTableModel modelo, int fila){
+        int aux = tabla.getRowCount();
+        List<String> datosReinicio = new ArrayList<>();
+        List<String[]> listas = new ArrayList<>();
+        for(int l = 0; l < aux; l++){
+            datosReinicio.add((String) modelo.getValueAt(fila, 1));
+        }
+
+        while(fila != tabla.getRowCount()){
+            modelo.removeRow(fila);
+        }
+
+        datosReinicio.remove(fila);
+        
+        nuevo();
+        for(int j=0; j<datosReinicio.size(); j++){
+            ingresoVentas(Integer.valueOf(datosReinicio.get(j)), añosPronostico, false);
+            listas.add(getFilaForVista());
+        }
+        return listas;
     }
 }
