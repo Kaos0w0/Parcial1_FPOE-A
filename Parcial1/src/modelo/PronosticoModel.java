@@ -1,5 +1,8 @@
 package modelo;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  * Parcial N. 1 FPOE (A). Archivo: PronosticoModel.java, Autores (Grupo 01 POE): 
  * Brayan Andrés Sánchez Lozano <brayan.andres.sanchez@correounivalle.edu.co>
@@ -175,7 +178,7 @@ public class PronosticoModel {
     }
 
     public boolean isCalculable(){
-        return totalAños >= 3;
+        return totalAños >= 3 && añosPronostico != 0;
     }
 
     public String[] getFilaForVista(){
@@ -185,5 +188,28 @@ public class PronosticoModel {
         arrayForVista[3] = String.valueOf(getYCuadrada());
         arrayForVista[4] = String.valueOf(getXPorY());
         return arrayForVista;
+    }
+
+    public String[] getTotalForVista(){
+        arrayForVista[0] = String.valueOf(totalSumaAños);
+        arrayForVista[1] = String.valueOf(totalVentas);
+        arrayForVista[2] = String.valueOf(totalAñosCuadrados);
+        arrayForVista[3] = String.valueOf(totalVentasCuadradas);
+        arrayForVista[4] = String.valueOf(totalVentasPorAños);
+        return arrayForVista;
+    }
+
+    public void nuevo(){
+        totalAños = 0;
+        totalVentas = 0;
+        totalAñosCuadrados = 0;
+        totalVentasCuadradas = 0;
+        totalVentasPorAños = 0;
+        totalSumaAños = 0;
+        arrayForVista = new String[5];
+    }
+
+    public void eliminarFila(JTable tabla, DefaultTableModel modelo, int fila){
+        añoEliminado((int) modelo.getValueAt(fila, 0), (int) modelo.getValueAt(fila, 1));
     }
 }

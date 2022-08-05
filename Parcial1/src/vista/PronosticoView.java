@@ -2,7 +2,13 @@ package vista;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  * Parcial N. 1 FPOE (A). Archivo: PronosticoView.java, Autores (Grupo 01 POE): 
@@ -20,6 +26,7 @@ public class PronosticoView extends javax.swing.JFrame {
     public PronosticoView() {
         initComponents();
         initBtnCommands();
+        organizarTabla();
         this.getContentPane().setBackground(Color.white);
     }
 
@@ -54,9 +61,67 @@ public class PronosticoView extends javax.swing.JFrame {
         return txtVentas.getText();
     }
 
+    public void organizarTabla(){
+        DefaultTableCellRenderer Alinear = new DefaultTableCellRenderer();
+        Alinear.setHorizontalAlignment(SwingConstants.CENTER);
+        for(int i=0; i<5; i++){
+            tblVentas.getColumnModel().getColumn(i).setCellRenderer(Alinear);
+        }
+    }
+
     public void setFila(String[] fila){
         modelo = (DefaultTableModel) tblVentas.getModel();
         modelo.addRow(fila);
+    }
+
+    public void limpiarTabla(JTable tabla){
+       if(tabla.getRowCount() > 0){
+            modelo = (DefaultTableModel) tabla.getModel();
+            int filas = tabla.getRowCount();
+            for (int i = 0;filas > i; i++) {
+                modelo.removeRow(0);
+            }
+        }
+    }
+
+    public void nuevo(){
+        limpiarTabla(tblVentas);
+        limpiarTabla(tblTotalV);
+        setTotal(new String[]{"-", "-", "-", "-", "-"});
+        txtVentas.setText("");
+        txtCantidad.setText("");
+    }
+
+    public void setTotal(String[] fila){
+        JTableHeader tableHeader = tblTotalV.getTableHeader();
+        TableColumnModel tableColumnModel = tableHeader.getColumnModel();
+        for(int i=0; i<5; i++){
+            TableColumn tableColumn = tableColumnModel.getColumn(i);
+            tableColumn.setHeaderValue(fila[i]);
+        }
+        tableHeader.repaint();
+    }
+
+    public int getSelectedRow(){
+        return tblVentas.getSelectedRow();
+    }
+
+    public JTable getTabla(){
+        return tblVentas;
+    }
+
+    public DefaultTableModel getModelo(){
+        modelo = (DefaultTableModel) tblVentas.getModel();
+        return modelo;
+    }
+
+    public void quitarFila(int fila){
+        modelo = (DefaultTableModel) tblVentas.getModel();
+        modelo.removeRow(fila);
+    }
+
+    public int getRowCount(){
+        return tblVentas.getRowCount();
     }
 
     /**
@@ -199,7 +264,7 @@ public class PronosticoView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "", "", "", "", ""
+                "-", "-", "-", "-", "-"
             }
         ) {
             Class[] types = new Class [] {

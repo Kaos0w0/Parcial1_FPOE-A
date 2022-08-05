@@ -47,14 +47,28 @@ public class PronosticoController {
                         ventas = Integer.valueOf(vista.getVentas());
                         modelo.ingresoVentas(ventas, año);
                         vista.setFila(modelo.getFilaForVista());
+                        vista.setTotal(modelo.getTotalForVista());                        
                     } catch(NumberFormatException e) {
                         JOptionPane.showMessageDialog(null, "Ingrese un valor de ventas valido", "Advertencia",
-        JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.WARNING_MESSAGE);
                     }
                 } case "btnNuevo" -> {
-                    
+                    vista.nuevo();
+                    modelo.nuevo();
                 } case "btnBorrar" -> {
-                    
+                    try{
+                        modelo.eliminarFila(vista.getTabla(), vista.getModelo(), vista.getSelectedRow());
+                        if(vista.getRowCount() == 1){
+                            vista.nuevo();
+                            modelo.nuevo();
+                        } else {
+                            modelo.eliminarFila(vista.getTabla(), vista.getModelo(), vista.getSelectedRow());
+                            vista.quitarFila(vista.getSelectedRow());
+                        }
+                    } catch (Exception e){
+                        JOptionPane.showMessageDialog(null, "Seleccione una fila primero", "Advertencia",
+                        JOptionPane.WARNING_MESSAGE); 
+                    }
                 } case "btnModificar" -> {
                     
                 } default -> System.out.println("Este boton no existe");
